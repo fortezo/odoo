@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="report_orden_traspaso"
+            string="Orden de Traspaso"
+            model="traspasos.documento" 
+            report_type="qweb-pdf"
+            file="traspasos.call_traspaso_documento_data" 
+            name="traspasos.call_traspaso_documento_data" 
+        />
+    </data>
+</openerp>

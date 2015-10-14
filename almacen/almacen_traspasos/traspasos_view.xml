@@ -1,0 +1,221 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_traspasos_documento_kanban">
+            <field name="name">traspasos.documento.kanban</field>
+            <field name="model">traspasos.documento</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey">
+                    <field name="name"/>
+                    <field name="enpresa_envio_id"/>
+                    <field name="partner_id"/>
+                    <field name="envioa_id"/>
+                    <field name="total"/>
+                    <field name="state"/>
+                    <field name="envio_fecha"/>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click" >
+                            
+
+                            <div class="oe_kanban_content">
+                                <div><b><field name="name"/></b></div>
+                                <div>
+                                    <field name="enpresa_envio_id"/><br/>
+                                </div>
+                                <div><b>Total:</b><field name="total"/></div>
+                                <div><b>Fecha:</b><field name="envio_fecha"/></div>
+                            </div>
+                            <div class="oe_clear"></div>
+                        </div>
+                    </t>
+                    </templates>
+                </kanban>
+            </field>
+         </record>
+        <record id="traspasos_documento_productos_tree" model="ir.ui.view">
+            <field name="name">traspasos.documento.productos.tree</field>
+            <field name="model">traspasos.documento.productos</field>
+            <field name="arch" type="xml">
+                <tree string="Productos Traspasados" colors="grey:state=='cancel';blue:state=='draft';red:state=='sent'">
+                    <field name="docunemto_id"/>
+                    <field name="product_id"/>
+                    <field name="cantidad"/>
+                    <field name="enpresa_envio_id"/>
+                    <field name="enpresa_resivir_id"/>
+                    <field name="write_date" string="fecha de modificacion"/>
+                    <field name="write_uid" string="usuario"/>
+                    <field name="categoria_id"/>
+                    <field name="state"/>
+
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_traspasos_documento_productos_graph">
+            <field name="name">traspasos.documento.productos.graph</field>
+            <field name="model">traspasos.documento.productos</field>
+            <field name="arch" type="xml">
+                <graph string="Prosuctos de traspasos" type="bar">
+                    <field name="product_id" type="row"/>
+                    <field name="importe" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_traspasos_documento_graph">
+            <field name="name">traspasos.documento.graph</field>
+            <field name="model">traspasos.documento</field>
+            <field name="arch" type="xml">
+                <graph string="Prosuctos de traspasos" type="bar">
+                    <field name="enpresa_envio_id" type="row"/>
+                    <field name="total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="view_traspasos_documento_gantt" model="ir.ui.view">
+            <field name="name">traspasos.documento.gantt</field>
+            <field name="model">traspasos.documento</field>
+            <field name="arch" type="xml">
+                <gantt date_start="envio_fecha" date_stop="recivo_fecha" string="Traspasos">
+                </gantt>
+            </field>
+        </record>
+         <record id="traspasos_documento_tree" model="ir.ui.view">
+            <field name="name">traspasos.documento.tree</field>
+            <field name="model">traspasos.documento</field>
+            <field name="arch" type="xml">
+                <tree string="Traspasos" colors="grey:state=='cancel';blue:state=='draft';red:state=='sent'">
+                    <field name="name"/>
+                    <field name="total"/>
+                    <field name="enpresa_envio_id"/>
+                    <field name="partner_id"/>
+                    <field name="fecha"/>
+                    <field name="state"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="traspasos_documento_form" model="ir.ui.view">
+            <field name="name">traspasos.documento.form</field>
+            <field name="model">traspasos.documento</field>
+            <field name="arch" type="xml">
+                <form string="Traspaso" version="8.0">
+                    <header>
+                        <button name="enviar" string="Enviar" type="object" states="draft" class="oe_highlight" groups="base.group_user" />
+                        <button name="recivir" class="oe_highlight"  string="Recibir" type="object"  states="sent" groups="base.group_user"/>
+                        <button name="imprimir" string="Imrpimir" class="oe_highlight" type="object" states="sent" groups="base.group_user"/>
+                        <button name="cancelar" string="Cancelar" type="object" states="sent" groups="base.group_user"/>
+                        
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            
+                            <label string="Orden de Traspaso:"/>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                    
+                        </h1>
+                        <group>
+                            <!-- colspan/col -->
+                            <group>
+                                <field name="enpresa_envio_id"/>
+                                <field name="partner_id"/>
+                                <field name="envioa_id"/>
+                                
+                            </group>
+                            <group>
+                                <field name="fecha"/>
+                                <field name="envio_fecha"/>
+                                <field name="recivo_fecha"/>
+                            </group>
+                            
+                        </group>
+                         <group>
+                                <field name="ubicacion_destino_id"/>
+                            </group>
+                        <notebook>
+                          <page string="Productos">
+                                <field name="order_line">
+                                    <tree string="Productos" editable="bottom">
+                                        <field name="product_id" on_change="onchange_product_id(product_id,cantidad,context)" />
+                                        <field name="cantidad" on_change="onchange_qty(product_id, cantidad, context)" />
+                                        <field name="unitario" on_change="onchange_unitario(product_id, unitario,cantidad, context)" />
+                                        <field name="importe" />
+                                    </tree>
+                                </field>
+                                 <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    
+                                    <field name="total" class="oe_subtotal_footer_separator"/>
+                                </group>
+                                <div class="oe_clear"/>
+                          </page>
+
+                        </notebook>
+                       
+                        <field name="notas"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+                
+            </field>
+        </record>
+        <record id="ordenes_traspaso_arecivir_action" model="ir.actions.act_window">
+            <field name="name">Ordenes de traspasos pendientes a recibir</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">traspasos.documento</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form,graph</field>
+           
+
+        </record>
+        <record id="ordenes_traspaso_action" model="ir.actions.act_window">
+            <field name="name">Ordenes de traspasos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">traspasos.documento</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,gantt,graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+        <record id="traspasos_documento_productos_action" model="ir.actions.act_window">
+            <field name="name">Productos Traspasados</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">traspasos.documento.productos</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+
+        <menuitem id="root_menu" name="Traspasos"/>
+        <menuitem id="submenu_traspasos" name="Traspasos" parent="root_menu" sequence="0"/>
+        <menuitem action="ordenes_traspaso_arecivir_action" id="submenu_ordenes_traspaso_pendientes_action" name="Pendientes a Recibir" parent="submenu_traspasos" sequence="0"/>
+        <menuitem action="ordenes_traspaso_action" id="submenu_ordenes_traspaso_action" name="Ordenes de Traspasos" parent="submenu_traspasos" sequence="1"/>
+        <menuitem action="traspasos_documento_productos_action" id="submenu_traspasos_documento_productos_action" name="Productos Traspasados" parent="submenu_traspasos" sequence="2"/>
+        
+        
+        <menuitem action="traspasos_documento_productos_action" id="submenu_traspasos_documento_productos_action" name="Productos Traspasados" parent="submenu_traspasos" sequence="2"/>
+            
+
+        <menuitem id="submenu_productos" name="Productos" parent="root_menu" sequence="1"/>
+
+        <record id="traspasos_product_template_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context" eval="{}"/>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+            
+        </record>
+        <menuitem
+            action="traspasos_product_template_action"
+            id="traspasos_menu_pos_products"
+            parent="submenu_productos" sequence="2"/>
+        
+    </data>
+</openerp>

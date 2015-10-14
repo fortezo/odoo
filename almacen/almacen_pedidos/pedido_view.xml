@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+     <menuitem id="root_menu_pedidos" name="Pedidos"/>
+     <menuitem id="submenu_pedidos" name="Pedidos" parent="root_menu_pedidos" sequence="0"/>
+     <menuitem id="submenu_pedidos_productos" name="Productos" parent="root_menu_pedidos" sequence="1"/>
+     <menuitem id="submenu_reportes" name="Reportes" parent="root_menu_pedidos" sequence="2"/>
+
+     <record id="pedido_orden_detalles_tree" model="ir.ui.view">
+            <field name="name">pedido.orden.detalles.tree</field>
+            <field name="model">pedido.orden.detalles</field>
+            <field name="arch" type="xml">
+                <tree string="Productos de pedidos" colors="grey:state in ('cancelado','borrador');blue:state=='enviado';red:state=='ordenado'">
+                    <field name="company_id"/>
+                    <field name="pedido_id"/>
+                    <field name="product_id"/>
+                    <field name="cantidad_solisitada"/>
+                    <field name="cantidad_surtida"/>
+                    <field name="fecha"/>
+                    <field name="importe"/>
+                    <field name="unitario" string="usuario"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_pedido_orden_detalles_graph">
+            <field name="name">pedido.orden.detalles.graph</field>
+            <field name="model">pedido.orden.detalles</field>
+            <field name="arch" type="xml">
+                <graph string="Detalles de pedidos" type="pivot">
+                    <field name="product_id" type="row"/>
+                    <field name="importe" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_pedido_orden_graph">
+            <field name="name">pedido.orden.graph</field>
+            <field name="model">pedido.orden</field>
+            <field name="arch" type="xml">
+                <graph string="Pedidos" type="pivot">
+                    <field name="fecha" type="row"/>
+                    <field name="total" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="pedido_orden_tree" model="ir.ui.view">
+            <field name="name">pedido.orden.tree</field>
+            <field name="model">pedido.orden</field>
+            <field name="arch" type="xml">
+                <tree string="Productos de pedidos" colors="grey:state in ('cancelado','borrador');blue:state=='enviado';red:state=='ordenado'">
+                    <field name="name"/>
+                    <field name="fecha"/>
+                    <field name="company_id"/>
+                    <field name="user_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="pedido_orden_form" model="ir.ui.view">
+            <field name="name">pedido.orden.form</field>
+            <field name="model">pedido.orden</field>
+            <field name="arch" type="xml">
+                <form string="Pedido Documento" version="8.0">
+                    <header>
+                        <button name="ordenar" string="Ordenar" type="object" states="borrador" class="oe_highlight" groups="base.group_user" />
+                        
+                        <button name="produccion" string="Producir" type="object" states="ordenado" class="oe_highlight" groups="base.group_user" />
+                        <button name="enviar" string="Enviar" type="object" states="enproceso" class="oe_highlight" groups="base.group_user" />
+                        <button name="recivir"  string="Recibir" type="object"  states="enviado" class="oe_highlight" groups="base.group_user"/>
+                        <button name="cancelar" string="Cancelar" type="object" states="ordenado" groups="base.group_user"/>
+                        
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Orden de Pedido:"/>
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+                        <group>
+                            <!-- colspan/col -->
+                            <group>
+                                <field name="company_id"/>
+                                <field name="user_id"/>
+                                
+                            </group>
+                            <group>
+                                <field name="fecha"/>
+                            </group>
+                            
+                        </group>
+                        <notebook>
+                          <page string="Productos">
+                                <field name="detalles_ids">
+                                    <tree string="Productos" editable="bottom">
+                                        <field name="product_id" on_change="onchange_product_id(product_id,cantidad_solisitada,context)"/>
+                                        <field name="cantidad_solisitada" on_change="onchange_qty(product_id, cantidad_solisitada, context)" />
+                                        <field name="cantidad_surtida"/>
+                                        <field name="importe" />
+                                    </tree>
+                                </field>
+                                 <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="total" class="oe_subtotal_footer_separator"/>
+                                </group>
+                                <div class="oe_clear"/>
+                          </page>
+                           <page string="Informacion de procesos">
+                                <group>
+                                    <group>
+                                        <field name="fecha_ordenado"/>
+                                        <field name="fecha_produccion"/>
+                                        <field name="fecha_enviado"/>
+                                        <field name="fecha_recivido"/>
+                                    </group>
+                                    <group>
+                                        <field name="ordenado_user_id"/>
+                                        <field name="produccion_user_id"/>
+                                        <field name="enviado_user_id"/>
+                                        <field name="recivido_user_id"/>
+                                    </group>
+                                </group>
+                           </page>
+
+                        </notebook>
+                       
+                        <field name="notas"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+                
+            </field>
+        </record>
+
+        <record id="pedido_orden_action" model="ir.actions.act_window">
+            <field name="name">Pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.orden</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+        <record id="pedido_orden_detalles_action" model="ir.actions.act_window">
+            <field name="name">Productos de pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.orden.detalles</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+        <menuitem
+            action="pedido_orden_detalles_action"
+            id="submenu_pedido_orden_detalles_action"
+            parent="submenu_pedidos" sequence="1"/>
+
+
+    <menuitem
+            action="pedido_orden_action"
+            id="submenu_pedido_orden_action"
+            parent="submenu_pedidos" sequence="0"/>
+        <record id="pedidos_product_template_action" model="ir.actions.act_window">
+            <field name="name">Productos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context" eval="{}"/>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+        </record>
+        <menuitem
+            action="pedidos_product_template_action"
+            id="pedidos_menu_pos_products"
+            parent="submenu_pedidos_productos" sequence="2"/>
+
+    </data>
+</openerp>

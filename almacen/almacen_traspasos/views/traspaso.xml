@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="traspaso_documento_data">
+    <t t-call="report.external_layout">
+    	<div class="oe_structure"/>
+        <div class="page">
+        	<h2>
+                <span>Orden de traspaso: </span>
+                <span t-field="o.name"/>
+            </h2>
+            <div class="row mt32 mb32" id="informations">
+                <div class="col-xs-2" t-if="o.enpresa_envio_id" >
+                    <strong>Salida:</strong>
+                    <p t-field="o.enpresa_envio_id"/>
+
+                </div>
+                <div class="col-xs-2" t-if="o.partner_id" >
+                    <strong>Destino:</strong>
+                    
+                    <p t-field="o.partner_id"/>
+                </div>
+                <div class="col-xs-2" t-if="o.envio_id">
+                    <strong>Departe de:</strong>
+                    
+                    <p t-field="o.envio_id"/>
+                </div>
+                <div class="col-xs-2" t-if="o.envioa_id">
+                    <strong>Entregar a:</strong>
+                    
+                    <p t-field="o.envioa_id"/>
+                </div>
+                
+            </div>
+            <div class="row mt32 mb32" id="informations_fechas">
+                <div class="col-xs-2" t-if="o.fecha" >
+                    <strong>Fecha del documento:</strong>
+                    <p t-field="o.fecha"/>
+
+                </div>
+                <div class="col-xs-2" t-if="o.envio_fecha" >
+                    <strong>Fecha de envio:</strong>
+                    
+                    <p t-field="o.envio_fecha"/>
+                </div>
+                <div class="col-xs-2" t-if="o.recivo_fecha">
+                    <strong>Fecha de recivo:</strong>
+                    
+                    <p t-field="o.recivo_fecha"/>
+                </div>
+               <div class="col-xs-2" t-if="o.state">
+                    <strong>Status:</strong>
+                    
+                    <p t-field="o.state"/>
+                </div>
+                
+            </div>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Categoria</th>
+                        <th>Cantidad</th>
+                        <th>Importe Unitario</th>
+                        <th>Importe</th>
+                    </tr>
+               </thead>
+               <tbody class="sale_tbody">
+                    <tr t-foreach="o.order_line" t-as="l">
+                        <td>
+                           <span t-field="l.product_id"/>
+                        </td>
+                        <td>
+                           <span t-field="l.categoria_id"/>
+                        </td>
+                        <td>
+                           <span t-field="l.cantidad"/>
+                        </td>
+                        <td>
+                           <span t-field="l.unitario"/> $
+                        </td>
+                        <td>
+                           <span t-field="l.importe"/> $
+                        </td>
+                       
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-xs-4 pull-right">
+                    <table class="table table-condensed">
+                        <tr class="border-black">
+                            <td><strong>Total</strong></td>
+                            <td class="text-right">
+                                <span t-field="o.total"/> $
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr/>
+            <span t-field="o.notas"/>
+        </div>
+    </t>
+</template>
+<template id="call_traspaso_documento_data">
+    <t t-call="report.html_container">
+        <t t-foreach="doc_ids" t-as="doc_id">
+            <t t-raw="translate_doc(doc_id, doc_model, 'envioa_id.lang', 'traspasos.traspaso_documento_data')"/>
+        </t>
+    </t>
+</template>
+</data>
+</openerp>

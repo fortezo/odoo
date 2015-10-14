@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+      
+       <record id="pedido_configuraciones_tree" model="ir.ui.view">
+            <field name="name">pedido.configuraciones.tree</field>
+            <field name="model">pedido.configuraciones</field>
+            <field name="arch" type="xml">
+                <tree string="Operqaciones de Pedidos" editable="bottom" >
+                    <field name="company_id"/>
+                    <field name="picking_type_id"/>
+                    <field name="users_id"/>
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="pedido_configuraciones_action" model="ir.actions.act_window">
+            <field name="name">Operqaciones de Pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.configuraciones</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context" eval="{}"/>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+            
+        </record>
+        <menuitem id="submenu_config" name="Configuraciones" parent="root_menu_pedidos" sequence="4"/>
+       	<menuitem action="pedido_configuraciones_action" id="submenu_pedido_configuraciones_action" name="Operaciones de Pedidos" parent="submenu_config" sequence="2"/>
+
+        <record id="pedido_plantilla_tree" model="ir.ui.view">
+            <field name="name">pedido.plantilla.tree</field>
+            <field name="model">pedido.plantilla</field>
+            <field name="arch" type="xml">
+                <tree string="Plantillas" editable="bottom" >
+                    <field name="company_id"/>
+                    <field name="product_id"/>
+                    <field name="multriplos"/>
+                    <field name="afectara_id"/>
+                    <field name="afectara_cantidad"/>
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="pedido_plantilla_action" model="ir.actions.act_window">
+            <field name="name">Plantillas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.plantilla</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context" eval="{}"/>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+            
+        </record>
+        <menuitem action="pedido_plantilla_action" id="submenu_pedido_plantilla_action" name="Plantillas" parent="submenu_config" sequence="3"/>
+        
+    </data>
+</openerp>

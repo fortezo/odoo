@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="account_getcfdi_form" model="ir.ui.view">
+            <field name="name">acount.invoice.getcfdi.form</field>
+            <field name="model">acount.invoice.getcfdi</field>
+            <field name="arch" type="xml">
+                <form string="CFDI" version="8.0">
+                    <sheet>
+                        <separator string="PAC: Itimbre" />
+                        <button name="validar" string="Timbrar Factura" type="object" class="oe_highlight"/>
+                        <group>
+                            <field name="amount_total" />
+                        </group>
+                    </sheet>
+                    
+                </form>
+            </field>
+        </record>
+      
+    </data>
+</openerp>

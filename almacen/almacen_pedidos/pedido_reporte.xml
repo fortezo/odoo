@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            id="report_orden_pedido"
+            string="Orden de Pedido"
+            model="pedido.orden" 
+            report_type="qweb-pdf"
+            file="mamamia_pedidos.call_pedido_orden_data" 
+            name="mamamia_pedidos.call_pedido_orden_data" 
+        />
+    </data>
+</openerp>

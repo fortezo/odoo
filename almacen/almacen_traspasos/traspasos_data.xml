@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+        <record id="mt_traspaso_enviado" model="mail.message.subtype">
+            <field name="name">Traspaso enviado</field>
+            <field name="res_model">traspasos.documento</field>
+            <field name="default" eval="True"/>
+            <field name="description">Envio de traspaso</field>
+        </record>
+        <record id="mt_traspaso_canceladoa" model="mail.message.subtype">
+            <field name="name">Traspaso Cancelado</field>
+            <field name="res_model">traspasos.documento</field>
+            <field name="default" eval="True"/>
+            <field name="description">Cancelacion de traspaso</field>
+        </record>
+        <record id="mt_traspaso_recibida" model="mail.message.subtype">
+            <field name="name">Traspaso Recibido</field>
+            <field name="res_model">traspasos.documento</field>
+            <field name="default" eval="True"/>
+            <field name="description">Recibo de traspaso</field>
+        </record>
+    </data>
+</openerp>

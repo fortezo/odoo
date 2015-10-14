@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="checador_registros_tree" model="ir.ui.view">
+            <field name="name">checador.registros.tree</field>
+            <field name="model">checador.registros</field>
+            <field name="arch" type="xml">
+                <tree string="Registros del Checador" editable="bottom" >
+                    <field name="fecha"/>
+                    <field name="horaEntrada"/>
+                    <field name="horaSalida"/>
+                    <field name="usuario_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="checador_registros_action" model="ir.actions.act_window">
+            <field name="name">Registros del Checador</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">checador.registros</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="context" eval="{}"/>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+        </record>
+
+        <menuitem
+            action="checador_registros_action"
+            id="menu_checador_registros"
+            parent="hr.menu_hr_main" sequence="0"/>
+    </data>
+</openerp>

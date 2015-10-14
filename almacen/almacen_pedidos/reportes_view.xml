@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="reportes_pedido_orden_action" model="ir.actions.act_window">
+            <field name="name">Resumen de pedidos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.orden</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+    	<record id="reportes_pedido_orden_detalles_action" model="ir.actions.act_window">
+            <field name="name">Resumen de productos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pedido.orden.detalles</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph</field>
+            <field eval="True" name="filter"/>
+            
+        </record>
+        <menuitem
+            action="reportes_pedido_orden_action"
+            id="reportes_submenu_pedido_orden_action"
+            parent="submenu_reportes" sequence="0"/>
+        <menuitem
+            action="reportes_pedido_orden_detalles_action"
+            id="reportes_submenu_pedido_orden_detalles_action"
+            parent="submenu_reportes" sequence="1"/>
+    </data>
+</openerp>
